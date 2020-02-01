@@ -1,7 +1,8 @@
-package storage
+package db
 
-type SpType int32
+type KvType int32
 
 const  (
-	SPOL_STRING = 101
+	LYKV_STRING = 101  // 字符串类型
 )
+

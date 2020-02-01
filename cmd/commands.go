@@ -2,6 +2,7 @@ package cmd
 
 type Cmder interface {
 	Err() error
+	SetErr(error)
 }
 
 type CommandsAbler interface {
@@ -17,11 +18,14 @@ func (cmd *baseCmd) Err() error {
 	return cmd.err
 }
 
-type commands func(cmd Cmder) error
 
-func (c commands) Get(key string) {
-	cmd := NewStringCmd("get", key)
-	_ := c(cmd)
+func (cmd *baseCmd) SetErr(err error) {
+	cmd.err = err
+}
+
+type StringCmd struct {
+	baseCmd
+	val string
 }
 
 func NewStringCmd(args ...interface{}) *StringCmd {
@@ -32,8 +36,13 @@ func NewStringCmd(args ...interface{}) *StringCmd {
 	}
 }
 
-type StringCmd struct {
-	baseCmd
-	val string
+
+type commands func(cmd Cmder) error
+
+func (c commands) Get(key string) {
+	cmd := NewStringCmd("get", key)
+	c(cmd)
 }
+
+
 

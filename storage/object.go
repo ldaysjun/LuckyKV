@@ -1,7 +1,9 @@
-package storage
+package db
 
-type Object struct {
+type LyKvObject struct {
 	Type     string
 	Encoding string
 	Ptr      interface{}
 }
+
+
