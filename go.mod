@@ -1,4 +1,4 @@
-module github.com/ldaysjun/LuckyKV
+module github.com/ldaysjun/lykv
 
 go 1.12
 

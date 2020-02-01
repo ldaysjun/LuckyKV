@@ -1,6 +1,9 @@
 package cmd
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 type base struct {
 	onClose func()
@@ -18,6 +21,10 @@ func NewClient() *Client {
 		base: base{},
 		ctx:  context.Background(),
 	}
+
+	lykv := 1
+	fmt.Println(lykv)
+
 
 	//c.commands =
 	return &c

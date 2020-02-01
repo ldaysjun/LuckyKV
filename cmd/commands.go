@@ -17,7 +17,6 @@ func (cmd *baseCmd) Err() error {
 	return cmd.err
 }
 
-//-------------------------------------------
 type commands func(cmd Cmder) error
 
 func (c commands) Get(key string) {
@@ -25,7 +24,6 @@ func (c commands) Get(key string) {
 	_ := c(cmd)
 }
 
-//-------------------------------------------
 func NewStringCmd(args ...interface{}) *StringCmd {
 	return &StringCmd{
 		baseCmd: baseCmd{
@@ -39,4 +37,3 @@ type StringCmd struct {
 	val string
 }
 
-//-------------------------------------------
