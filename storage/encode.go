@@ -1,4 +1,4 @@
-package db
+package storage
 
 type ENCODING int32
 
