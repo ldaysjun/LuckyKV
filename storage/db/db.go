@@ -3,7 +3,11 @@ package db
 import (
 	"errors"
 	"github.com/ldaysjun/lykv/storage"
+	"sync"
 )
+
+var kvDB *KvDB
+var once sync.Once
 
 type KvDB struct {
 	dict map[string]*storage.KvObject
@@ -11,8 +15,15 @@ type KvDB struct {
 
 func NewKvDB() *KvDB {
 	kvDB := &KvDB{
-		dict:make(map[string]*storage.KvObject),
+		dict: make(map[string]*storage.KvObject),
 	}
+	return kvDB
+}
+
+func GetKvDb() *KvDB {
+	once.Do(func() {
+		kvDB = NewKvDB()
+	})
 	return kvDB
 }
 
@@ -24,11 +35,11 @@ func (k *KvDB) dbAdd(key string, object *storage.KvObject) error {
 	return nil
 }
 
-func (k *KvDB) dbFind(key string) *storage.KvObject {
+func (k *KvDB) dbFind(key string) (*storage.KvObject,error) {
 	if object, ok := k.dict[key]; ok {
-		return object
+		return object,nil
 	}
-	return nil
+	return nil,errors.New("nil")
 }
 
 func (k *KvDB) dbDelete(key string) {
@@ -48,7 +59,7 @@ func (k *KvDB) DeleteKey(key string) {
 	k.dbDelete(key)
 }
 
-func (k *KvDB) FindKey(key string) *storage.KvObject {
-	object := k.dbFind(key)
-	return object
+func (k *KvDB) FindKey(key string) (*storage.KvObject,error) {
+	object,err := k.dbFind(key)
+	return object,err
 }

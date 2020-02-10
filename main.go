@@ -1,28 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"github.com/go-redis/redis/v7"
+	"github.com/ldaysjun/lykv/cmd"
+	"github.com/ldaysjun/lykv/kvql"
+)
 
 func main() {
-	//r := redis.NewClient(nil)
-	//r.Get()
-	//r.Set()
-	//t := cmd.NewClient()
-	//t.Get("test")
+	r := redis.NewClient(nil)
+	r.Get("").Result()
 
-	test := make(map[string]string)
-	test["ok"] = "ok1"
-	delete(test, "ok")
 
-	if _, ok := test["ok"]; ok {
-		fmt.Println(test["ok"])
-	} else {
-		fmt.Println("不存在")
-	}
 
-	fmt.Println(len(test))
+	t := cmd.NewClient()
+	t.Get("test")
 
-	fmt.Println(test)
 
+	k := kvql.KvQL{}
 }
 
 type name struct {

@@ -3,21 +3,29 @@ package cmd
 import (
 	"context"
 	"errors"
+	"github.com/ldaysjun/lykv/io"
+	"github.com/ldaysjun/lykv/kvql"
 )
 
 type baseClient struct {
 	onClose func()
+	kvQL    kvql.KvQL
 }
 
 func (base *baseClient) process(ctx context.Context, cmd Cmder) {
 	if err := base._process(ctx, cmd); err != nil {
-		cmd.SetErr(err)
+		cmd.setErr(err)
 	}
 }
 
 func (base *baseClient) _process(ctx context.Context, cmd Cmder) error {
-
+	args := cmd.Args()
+	rd := base.kvQL.ParsingCmd(args)
 	return nil
+}
+
+func (base *baseClient) withReader(ctx context.Context, rd *io.Reader, fn func(reader *io.Reader) error) {
+	fn(rd)
 }
 
 func NewClient() *Client {
@@ -36,12 +44,7 @@ type Client struct {
 	ctx context.Context
 }
 
-func (c *Client)Process(cmd Cmder) error  {
-	c.baseClient.process(c.ctx,cmd)
+func (c *Client) Process(cmd Cmder) error {
+	c.baseClient.process(c.ctx, cmd)
 	return errors.New("试试")
 }
-
-
-
-
-
