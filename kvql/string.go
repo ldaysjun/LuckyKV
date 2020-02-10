@@ -23,6 +23,7 @@ func (s *str)Get(args ...interface{}) *io.Reader{
 		}
 	}
 
+	
 	s.parsing(object)
 	return nil
 
