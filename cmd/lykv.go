@@ -19,13 +19,17 @@ func (base *baseClient) process(ctx context.Context, cmd Cmder) {
 }
 
 func (base *baseClient) _process(ctx context.Context, cmd Cmder) error {
-	args := cmd.Args()
-	rd := base.kvQL.ParsingCmd(args)
+	args := cmd.argsData()
+	rd := base.kvQL.ParsingCmd(args...)
+	err := base.withReader(ctx,rd,cmd.readReply)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-func (base *baseClient) withReader(ctx context.Context, rd *io.Reader, fn func(reader *io.Reader) error) {
-	fn(rd)
+func (base *baseClient) withReader(ctx context.Context, rd *io.Reader, fn func(reader *io.Reader) error) error{
+	return fn(rd)
 }
 
 func NewClient() *Client {

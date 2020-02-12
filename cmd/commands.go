@@ -4,14 +4,14 @@ import "github.com/ldaysjun/lykv/io"
 
 type Cmder interface {
 	Err() error
-	Args() []interface{}
+	argsData() []interface{}
 	setErr(error)
 	readReply(rd *io.Reader) error
 }
 
 type CommandsAbler interface {
 	Get(key string)
-	ZRange(key string)
+	Set(key string)
 }
 
 type baseCmd struct {
@@ -23,7 +23,7 @@ func (cmd *baseCmd) Err() error {
 	return cmd.err
 }
 
-func (cmd *baseCmd) Args() []interface{} {
+func (cmd *baseCmd) argsData() []interface{} {
 	return cmd.args
 }
 
@@ -50,15 +50,25 @@ func (cmd *StringCmd)readReply(rd *io.Reader) error{
 	return cmd.err
 }
 
-type commands func(cmd Cmder) error
-
-func (c commands) Get(key string) {
-	cmd := NewStringCmd("get", key)
-	c(cmd)
+func (cmd *StringCmd)Result() (string,error){
+	return cmd.val,cmd.err
 }
 
-func (c commands) ZRange(key string) {
+
+type commands func(cmd Cmder) error
+
+func (c commands) Get(key string) *StringCmd{
 	cmd := NewStringCmd("get", key)
+	c(cmd)
+	return cmd
+}
+
+func (c commands) Set(key string,value interface{}) {
+	args := make([]interface{},3,3)
+	args[0] = "set"
+	args[1] = key
+	args[2] = value
+	cmd := NewStringCmd(args...)
 	c(cmd)
 }
 

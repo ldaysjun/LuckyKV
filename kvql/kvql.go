@@ -16,8 +16,12 @@ func (kv *KvQL) ParsingCmd(args ...interface{}) *io.Reader {
 			Err: errors.New("cmd is nil"),
 		}
 	}
+	var reader *io.Reader
 	if args[0] == "get" {
-		kv.Get(args)
+		reader = kv.Get(args...)
 	}
-	return &io.Reader{}
+	if args[0] == "set" {
+		reader = kv.Set(args...)
+	}
+	return reader
 }

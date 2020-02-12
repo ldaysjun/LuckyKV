@@ -1,22 +1,21 @@
 package main
 
 import (
-	"github.com/go-redis/redis/v7"
+	"fmt"
 	"github.com/ldaysjun/lykv/cmd"
-	"github.com/ldaysjun/lykv/kvql"
 )
 
 func main() {
-	r := redis.NewClient(nil)
-	r.Get("").Result()
-
+	//r := redis.NewClient(nil)
+	//r.Get("").Result()
+	//r.Set().Result()
 
 
 	t := cmd.NewClient()
-	t.Get("test")
+	t.Set("ldjzhang","1")
+	s,_ := t.Get("ldjzhang").Result()
+	fmt.Println(s)
 
-
-	k := kvql.KvQL{}
 }
 
 type name struct {

@@ -1,7 +1,7 @@
 package storage
 
 type KvObject struct {
-	Type     string
+	Type     KvType
 	Encoding string
 	Ptr      interface{}
 }
