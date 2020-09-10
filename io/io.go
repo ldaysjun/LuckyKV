@@ -1,14 +1,15 @@
 package io
 
 type Reader struct {
-	Val interface{}
-	Err   error
+	Val  interface{}
+	Err  error
+	test string
 }
 
-func (r *Reader)ReadString()(string,error)  {
+func (r *Reader) ReadString() (string, error) {
 	if r.Err != nil {
-		return "",r.Err
+		return "", r.Err
 	}
 	val := r.Val.(string)
-	return val,r.Err
+	return val, r.Err
 }
