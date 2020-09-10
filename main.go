@@ -2,20 +2,17 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/ldaysjun/lykv/cmd"
 )
 
 func main() {
-	//r := redis.NewClient(nil)
-	//r.Get("").Result()
-	//r.Set().Result()
-
-
 	t := cmd.NewClient()
-	t.Set("ldjzhang","1")
-	s,_ := t.Get("ldjzhang").Result()
-	fmt.Println(s)
+	t.Set("ldjzhang", "1")
+	s, err := t.Get("ldjzhang").Result()
 
+	fmt.Println(s)
+	fmt.Println(err)
 }
 
 type name struct {

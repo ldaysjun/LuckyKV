@@ -1,8 +1,10 @@
 package cmd
 
-import "github.com/ldaysjun/lykv/io"
+import (
+	"github.com/ldaysjun/lykv/io"
+)
 
-type Cmder interface {
+type Cmd interface {
 	Err() error
 	argsData() []interface{}
 	setErr(error)
@@ -27,7 +29,6 @@ func (cmd *baseCmd) argsData() []interface{} {
 	return cmd.args
 }
 
-
 func (cmd *baseCmd) setErr(err error) {
 	cmd.err = err
 }
@@ -45,32 +46,28 @@ type StringCmd struct {
 	val string
 }
 
-func (cmd *StringCmd)readReply(rd *io.Reader) error{
-	cmd.val,cmd.err = rd.ReadString()
+func (cmd *StringCmd) readReply(rd *io.Reader) error {
+	cmd.val, cmd.err = rd.ReadString()
 	return cmd.err
 }
 
-func (cmd *StringCmd)Result() (string,error){
-	return cmd.val,cmd.err
+func (cmd *StringCmd) Result() (string, error) {
+	return cmd.val, cmd.err
 }
 
+type commands func(cmd Cmd) error
 
-type commands func(cmd Cmder) error
-
-func (c commands) Get(key string) *StringCmd{
+func (c commands) Get(key string) *StringCmd {
 	cmd := NewStringCmd("get", key)
-	c(cmd)
+	_ = c(cmd)
 	return cmd
 }
 
-func (c commands) Set(key string,value interface{}) {
-	args := make([]interface{},3,3)
+func (c commands) Set(key string, value interface{}) {
+	args := make([]interface{}, 3, 3)
 	args[0] = "set"
 	args[1] = key
 	args[2] = value
 	cmd := NewStringCmd(args...)
-	c(cmd)
+	_ = c(cmd)
 }
-
-
-

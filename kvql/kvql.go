@@ -2,13 +2,15 @@ package kvql
 
 import (
 	"errors"
+
 	"github.com/ldaysjun/lykv/io"
 )
 
 type KvQL struct {
-	str
+	LyString
 }
 
+// 添加命令
 func (kv *KvQL) ParsingCmd(args ...interface{}) *io.Reader {
 	if len(args) == 0 {
 		return &io.Reader{
