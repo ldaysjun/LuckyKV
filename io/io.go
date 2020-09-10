@@ -1,8 +1,9 @@
 package io
 
 type Reader struct {
-	Val interface{}
-	Err error
+	Val  interface{}
+	Err  error
+	test string
 }
 
 func (r *Reader) ReadString() (string, error) {
